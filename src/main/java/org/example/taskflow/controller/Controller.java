@@ -1,15 +1,25 @@
 package org.example.taskflow;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-public class Controller {
+public class TaskController {
 
+    @Autowired
+    private TaskService taskService;
+
+    // Get all tasks
     @GetMapping
-    public String getTasks() {
-        return "Hey, my TaskFlow API is actually working!";
+    public List<Task> getAllTasks() {
+        return taskService.getAllTasks();
+    }
+
+    // Create a new task
+    @PostMapping
+    public Task createTask(@RequestBody Task task) {
+        return taskService.createTask(task);
     }
 }
