@@ -6,20 +6,39 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-public class TaskController {
+public class Controller {
 
     @Autowired
     private TaskService taskService;
 
-    // Get all tasks
+    // 1. Get all tasks
     @GetMapping
     public List<Task> getAllTasks() {
         return taskService.getAllTasks();
     }
 
-    // Create a new task
+    // 2. Create a new task
     @PostMapping
     public Task createTask(@RequestBody Task task) {
         return taskService.createTask(task);
+    }
+
+    // 3. Get a single task by ID
+    @GetMapping("/{id}")
+    public Task getTaskById(@PathVariable Long id) {
+        return taskService.getTaskById(id);
+    }
+
+    // 4. Update task status (Commit 1)
+    @PutMapping("/{id}/status")
+    public Task updateTaskStatus(@PathVariable Long id, @RequestParam String status) {
+        return taskService.updateTaskStatus(id, status);
+    }
+
+    // 5. Delete a task (Commit 2)
+    @DeleteMapping("/{id}")
+    public String deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
+        return "Task with id " + id + " has been successfully deleted.";
     }
 }
