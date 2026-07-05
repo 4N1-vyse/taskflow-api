@@ -18,20 +18,20 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    // Find a single task or throw our custom 404 exception if it's missing!
     public Task getTaskById(Long id) {
         return taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
     }
 
-    // Update task status
     public Task updateTaskStatus(Long id, String status) {
+        if (status == null || status.trim().isEmpty()) {
+            throw new IllegalArgumentException("Task status cannot be empty or whitespace.");
+        }
         Task task = getTaskById(id);
-        task.setStatus(status);
+        task.setStatus(status.trim().toUpperCase());
         return taskRepository.save(task);
     }
 
-    // Delete a task safely
     public void deleteTask(Long id) {
         Task task = getTaskById(id);
         taskRepository.delete(task);
